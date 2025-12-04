@@ -1,13 +1,214 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Pathfinder Digital</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pathfinder Digital - Versi Lengkap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --hijau:#88b04b;
+      --emas:#c9a227;
+      --muted:#6b7280;
+      --bg:#f9fafb;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{margin:0;background:var(--bg);color:#1f2937;display:flex;flex-direction:column;min-height:100vh;}
+    header{
+      background:linear-gradient(90deg,#e8f3e5,#fffef3);
+      padding:30px 24px;text-align:center;
+      box-shadow:0 1px 4px rgba(0,0,0,.05);
+    }
+    header h1{margin:0;font-size:26px;font-weight:700;color:var(--hijau);}    
+    header p{margin:6px 0 0;font-size:15px;color:var(--emas);}    
+
+    /* LAYOUT */
+    main{display:flex;flex:1;max-width:1200px;margin:0 auto;width:100%;gap:10px;}
+
+    /* SIDEBAR COLLAPSIBLE */
+    aside{
+      width:250px;background:#fffef9;border-right:1px solid #eee;
+      padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.04);
+    }
+
+    .cat-title{font-size:16px;color:var(--emas);margin-bottom:10px;font-weight:600;}
+
+    .accordion{
+      background:#f3f4f6;padding:10px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-weight:600;transition:.2s;
+    }
+    .accordion:hover{background:#e2e8f0;}
+
+    .panel{
+      max-height:0;overflow:hidden;transition:0.3s ease;padding-left:10px;
+    }
+    .panel button{
+      width:100%;text-align:left;margin:6px 0;background:#fff;border:1px solid #eee;padding:6px 8px;border-radius:8px;cursor:pointer;
+    }
+
+    /* CONTENT */
+    .content{flex:1;padding:24px;}
+
+    .searchRow{display:flex;gap:8px;margin-bottom:16px;}
+    input[type=text]{flex:1;padding:12px;border-radius:12px;border:1px solid #d1d5db;font-size:15px;}
+    button{padding:12px 18px;background:var(--hijau);border:none;color:white;font-weight:600;border-radius:12px;cursor:pointer;}
+
+    /* RESULT CARD */
+    .results{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+    .card{background:white;border-radius:16px;padding:18px;box-shadow:0 4px 12px rgba(0,0,0,.06);}
+    .subject{font-size:18px;font-weight:600;color:var(--hijau);}
+    .meta{font-size:13px;color:var(--muted);margin-bottom:6px;}
+
+    .sinopsis-collapsible{background:#f1f5f9;padding:10px;border-radius:8px;margin-top:8px;border-left:4px solid var(--hijau);cursor:pointer;font-weight:600;}
+    .sinopsis-panel{max-height:0;overflow:hidden;transition:0.3s ease;padding-left:6px;font-size:14px;color:#374151;}
+
+    /* TOPIK */
+    .topic{background:#f9fafb;border-radius:8px;padding:8px 10px;margin-top:8px;display:flex;justify-content:space-between;font-size:14px;}
+
+    /* MOBILE MODE */
+    @media(max-width:768px){
+      main{flex-direction:column;}
+      aside{width:100%;order:2;}
+      .content{order:1;}
+    }
+
+    /* MODE VALIDASI */
+    .validation-box{
+      background:#fffef9;border:1px dashed var(--emas);padding:12px;border-radius:12px;margin-bottom:18px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Pathfinder Digital</h1>
-  <p>Versi siap upload ke GitHub Pages.</p>
-  <script src="script.js"></script>
+
+<header>
+  <h1>Pathfinder Digital Koleksi Literatur Keislaman</h1>
+  <p>Versi Lengkap: Collapsible + Mobile Friendly + Sinopsis + Mode Validasi</p>
+</header>
+
+<main>
+  <aside>
+    <div class="cat-title">Kategori</div>
+
+    <div class="accordion">Aqidah</div>
+    <div class="panel">
+      <button data-cat="aqidah">Lihat Buku Aqidah</button>
+    </div>
+
+    <div class="accordion">Fiqh</div>
+    <div class="panel">
+      <button data-cat="fiqh">Lihat Buku Fiqh</button>
+    </div>
+
+    <div class="accordion">Tafsir</div>
+    <div class="panel">
+      <button data-cat="tafsir">Lihat Buku Tafsir</button>
+    </div>
+
+    <div class="accordion">Hadis</div>
+    <div class="panel">
+      <button data-cat="hadis">Lihat Buku Hadis</button>
+    </div>
+
+    <div class="accordion">Sejarah</div>
+    <div class="panel">
+      <button data-cat="sejarah">Lihat Buku Sejarah</button>
+    </div>
+  </aside>
+
+  <div class="content">
+
+    <!-- MODE VALIDASI -->
+    <div class="validation-box">
+      <strong>Mode Validasi:</strong> Silakan lakukan tugas berikut:<br>
+      • Cari satu topik (misal: "wudhu")<br>
+      • Temukan buku terkait<br>
+      • Catat call number dan judulnya<br>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="searchRow">
+      <input id="q" type="text" placeholder="Cari judul, topik, atau kata kunci...">
+      <button id="btn">Cari</button>
+    </div>
+
+    <section id="results" class="results"></section>
+  </div>
+</main>
+
+<script>
+
+  const library=[
+    {id:'B001',title:'Ringkasan Fiqh Ibadah',author:'H. Ahmad Nur',callNumber:'297.1/Fiq-I',year:2015,category:'fiqh',synopsis:'Pembahasan ibadah pokok seperti shalat, wudhu, dan puasa.',subjects:[{name:'Shalat',pages:['12-20','45'],notes:'Panduan praktik'},{name:'Wudhu',pages:['9-11'],notes:'Teknis wudhu'}]},
+    {id:'B002',title:'Aqidah dan Dasar-dasar Tauhid',author:'Siti Maryam',callNumber:'297.2/Aqid',year:2018,category:'aqidah',synopsis:'Penjelasan prinsip tauhid dan syirik.',subjects:[{name:'Tauhid',pages:['1-30'],notes:'Konsep dasar'},{name:'Syirik',pages:['31-40'],notes:'Contoh bentuk syirik'}]},
+    {id:'B003',title:'Kumpulan Hadis Pilihan',author:'Dr. Hasan Al-Banna',callNumber:'297.3/Hadis',year:2010,category:'hadis',synopsis:'Hadis tematik tentang akhlak dan sunnah.',subjects:[{name:'Akhlak',pages:['5','26-28'],notes:'Hadis akhlak'}]},
+    {id:'B004',title:'Sejarah Islam Awal',author:'Mahmud Khalil',callNumber:'297.9/Sej',year:2019,category:'sejarah',synopsis:'Sejarah dakwah Rasul hingga Khulafaur Rasyidin.',subjects:[{name:'Masa Rasulullah',pages:['1-40'],notes:'Sejarah dakwah'}]},
+    {id:'B005',title:'Tafsir Surah Al-Baqarah',author:'Ust. Rahmatullah',callNumber:'297.4/Taf',year:2020,category:'tafsir',synopsis:'Tafsir ayat lengkap dan asbabun nuzul.',subjects:[{name:'Tafsir',pages:['5-60'],notes:'Makna ayat'}]}
+  ];
+
+  function normalize(s){return s.toString().toLowerCase();}
+
+  function search(query,cat=null){
+    const q=normalize(query).trim();
+    return library.filter(b=>{
+      const matchCat =cat? b.category===cat:true;
+      const matchQuery = q? normalize(b.title).includes(q) || normalize(b.synopsis).includes(q) || b.subjects.some(s=>normalize(s.name).includes(q)):true;
+      return matchCat && matchQuery;
+    });
+  }
+
+  const resultsEl=document.getElementById('results');
+
+  function render(books){
+    resultsEl.innerHTML='';
+    if(!books.length){resultsEl.innerHTML='<div class="meta">Tidak ada hasil ditemukan.</div>';return;}
+
+    books.forEach(book=>{
+      const card=document.createElement('div');card.className='card';
+
+      let html=`<div class="subject">${book.title}</div>
+      <div class="meta">${book.callNumber} • ${book.author} • ${book.year}</div>
+
+      <div class="sinopsis-collapsible">Sinopsis</div>
+      <div class="sinopsis-panel">${book.synopsis}</div>`;
+
+      book.subjects.forEach(t=>{
+        html += `<div class="topic"><div><strong>${t.name}</strong><br><small>${t.notes}</small></div><small>Hal: ${t.pages.join(', ')}</small></div>`;
+      });
+
+      card.innerHTML=html;
+      resultsEl.appendChild(card);
+    });
+
+    document.querySelectorAll('.sinopsis-collapsible').forEach((acc,i)=>{
+      acc.addEventListener('click',()=>{
+        const panel = acc.nextElementSibling;
+        panel.style.maxHeight = panel.style.maxHeight? null : panel.scrollHeight + 'px';
+      });
+    });
+  }
+
+  document.getElementById('btn').addEventListener('click',()=>{
+    const q=document.getElementById('q').value;
+    render(search(q));
+  });
+
+  document.querySelectorAll('.panel button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      render(search('',btn.dataset.cat));
+    });
+  });
+
+  document.querySelectorAll('.accordion').forEach(acc=>{
+    acc.addEventListener('click',()=>{
+      const panel = acc.nextElementSibling;
+      panel.style.maxHeight = panel.style.maxHeight? null : panel.scrollHeight + 'px';
+    });
+  });
+
+  render(library);
+</script>
+
 </body>
 </html>
+
